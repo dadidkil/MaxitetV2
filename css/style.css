@@ -587,10 +587,19 @@ section {
 .qr-code-image {
     width: 200px;
     height: 200px;
-    background: url('https://via.placeholder.com/200x200/ffffff/000000?text=QR+Code');
-    background-size: cover;
+    background: #fff;
     border-radius: 10px;
     box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.qr-code-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .qr-phone-mockup {
@@ -813,20 +822,21 @@ section {
 
 /* === FOOTER === */
 footer {
-    background: #1a1a1a;
-    color: white;
-    padding: 80px 0 20px;
+    background: #181828;
+    color: #e0e0e0;
+    padding: 60px 0 15px;
+    font-size: 1rem;
 }
 
 .footer-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 40px;
+    gap: 60px;
     margin-bottom: 40px;
 }
 
 .footer-logo h3 {
-    color: var(--white-color);
+    color: var(--primary-color);
     font-size: 1.8rem;
     margin-bottom: 0.5rem;
 }
@@ -856,13 +866,11 @@ footer {
 }
 
 .footer-bottom {
-    text-align: center;
-    padding-top: 20px;
     border-top: 1px solid #333;
-}
-
-.footer-bottom p {
-    margin-bottom: 0.25rem;
+    margin-top: 30px;
+    padding-top: 15px;
+    color: #888;
+    font-size: 0.95rem;
 }
 
 /* === RESPONSIVE DESIGN === */
@@ -883,6 +891,7 @@ footer {
     
     .qr-demo {
         flex-direction: column;
+        gap: 2rem;
     }
 }
 
@@ -1136,4 +1145,63 @@ footer {
 [data-aos].aos-animate {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* --- Анимация появления секций --- */
+section, .gallery-item, .product-card, .benefit-item, .philosophy-item, .review-card, .faq-item, .qr-feature {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s, transform 0.7s;
+}
+section.visible, .gallery-item.visible, .product-card.visible, .benefit-item.visible, .philosophy-item.visible, .review-card.visible, .faq-item.visible, .qr-feature.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- Эффект наведения на карточки --- */
+.product-card:hover, .benefit-item:hover, .philosophy-item:hover, .qr-feature:hover {
+    box-shadow: 0 8px 32px rgba(108,99,255,0.15);
+    transform: translateY(-8px) scale(1.03);
+    z-index: 2;
+}
+
+/* --- Стили уведомлений --- */
+.notification {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 18px 32px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: opacity 0.4s, transform 0.4s;
+    transform: translateY(-20px);
+}
+.notification.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+.notification.error {
+    background: var(--accent-color);
+}
+
+/* --- Затемнение фона при открытом мобильном меню --- */
+.menu-backdrop {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.25);
+    z-index: 999;
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+.menu-backdrop.active {
+    display: block;
+    opacity: 1;
 }

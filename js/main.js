@@ -101,21 +101,68 @@ function validateEmail(email) {
     return re.test(email);
 }
 
+// Плавное появление секций при скролле
+function revealOnScroll() {
+    const revealEls = document.querySelectorAll('section, .gallery-item, .product-card, .benefit-item, .philosophy-item, .review-card, .faq-item, .qr-feature');
+    const windowHeight = window.innerHeight;
+    revealEls.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < windowHeight - 60) {
+            el.classList.add('visible');
+        }
+    });
+}
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('DOMContentLoaded', revealOnScroll);
+
+// Затемнение фона при открытом мобильном меню
+const menuBackdrop = document.querySelector('.menu-backdrop');
+function updateMenuBackdrop() {
+    if (navMenu.classList.contains('active')) {
+        menuBackdrop.classList.add('active');
+    } else {
+        menuBackdrop.classList.remove('active');
+    }
+}
+burgerMenu.addEventListener('click', updateMenuBackdrop);
+menuBackdrop.addEventListener('click', () => {
+    navMenu.classList.remove('active');
+    burgerMenu.classList.remove('active');
+    updateMenuBackdrop();
+});
+// Закрытие по клику на ссылку
+navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        burgerMenu.classList.remove('active');
+        updateMenuBackdrop();
+    });
+});
+
+// Плавная прокрутка (если вдруг не работает)
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+// Улучшенный показ уведомлений
 function showNotification(message, type) {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.textContent = message;
-    
     document.body.appendChild(notification);
-    
     setTimeout(() => {
         notification.classList.add('show');
     }, 100);
-    
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
             notification.remove();
-        }, 300);
+        }, 400);
     }, 3000);
 } 
